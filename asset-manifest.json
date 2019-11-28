@@ -1,0 +1,21 @@
+{
+  "files": {
+    "main.css": "/movie-search-redux/static/css/main.2bf8a911.chunk.css",
+    "main.js": "/movie-search-redux/static/js/main.bff31583.chunk.js",
+    "main.js.map": "/movie-search-redux/static/js/main.bff31583.chunk.js.map",
+    "runtime-main.js": "/movie-search-redux/static/js/runtime-main.8dd34036.js",
+    "runtime-main.js.map": "/movie-search-redux/static/js/runtime-main.8dd34036.js.map",
+    "static/js/2.b578ca23.chunk.js": "/movie-search-redux/static/js/2.b578ca23.chunk.js",
+    "static/js/2.b578ca23.chunk.js.map": "/movie-search-redux/static/js/2.b578ca23.chunk.js.map",
+    "index.html": "/movie-search-redux/index.html",
+    "precache-manifest.37216e46d530befdf678296f92cce0d9.js": "/movie-search-redux/precache-manifest.37216e46d530befdf678296f92cce0d9.js",
+    "service-worker.js": "/movie-search-redux/service-worker.js",
+    "static/css/main.2bf8a911.chunk.css.map": "/movie-search-redux/static/css/main.2bf8a911.chunk.css.map"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.8dd34036.js",
+    "static/js/2.b578ca23.chunk.js",
+    "static/css/main.2bf8a911.chunk.css",
+    "static/js/main.bff31583.chunk.js"
+  ]
+}
