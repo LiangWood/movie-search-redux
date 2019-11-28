@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useReducer } from 'react';
+import { initialState, reducer } from '../store/reducer/index';
+
 import { Container, Card } from '@material-ui/core';
 import '../App.css';
 
@@ -28,9 +30,7 @@ const useStyles = makeStyles( grid => ({
 
 const App = () => {
 
-  const [loading, setLoading] = useState(true)
-  const [movies, setMovies] = useState([])
-  const [errorMessage, setErrorMessage] = useState(null)
+  const [state, dispatch] = useReducer(reducer, initialState)
 
   const classes = useStyles()
 
@@ -38,48 +38,62 @@ const App = () => {
     fetch(MOVIE_API_URL)
       .then( response =>　response.json())
       .then( jsonResponse => {
-        // console.log(jsonResponse.Search)
-        setMovies(jsonResponse.Search)
-        setLoading(false)
+        dispatch({
+          type: 'SEARCH_MOVIES_SUCCESS',
+          payload: jsonResponse.Search
+        })
       })
   }, [])
 
   const search = searchValue => {
-    setLoading(true);
-    setErrorMessage(null);
+    dispatch({
+      type: "SEARCH_MOVIES_REQUEST"
+    });
 
     fetch(`https://www.omdbapi.com/?s=${searchValue}&apikey=89a1bd51`)
       .then(response => response.json())
       .then(jsonResponse => {
         if (jsonResponse.Response === "True") {
-          setMovies(jsonResponse.Search);
-          setLoading(false);
+          dispatch({
+            type: 'SEARCH_MOVIES_SUCCESS',
+            payload: jsonResponse.Search
+          })
         } else {
-          setErrorMessage(jsonResponse.Error);
-          setLoading(false);
+          dispatch({
+            type: "SEARCH_MOVIES_FAILURE",
+            error: jsonResponse.Error
+          });
         }
       });
-  	};
+  };
+
+  const refreshPage = () => {
+    window.location.reload()
+  }
+
+  const { movies, errorMessage, loading } = state;
+
+  const getMovies = 
+  loading && !errorMessage ? (
+    <span>loading...</span>) : errorMessage ? (
+      <div className="errorMessage">{errorMessage}</div>
+    ) : (
+      movies.map((movie, index) => (
+        <Card className={`${classes.card} ${classes.grid}`} key={`${index}-${movie.title}`} >
+          <Movie movie={movie} />
+        </Card>
+      )
+      )
+    )  
 
   return (
     <div className="App">
-      <Header text="MOVIES SEARCH" />
+      <Header text="MOVIES SEARCH" refresh={refreshPage} />
       <Search search={search} />
       <p className={`App-intro, ${classes.text}`}>Sharing a few of our favourite movies</p>
       <Container maxWidth="lg" className={classes.container}>
         <div className="movies">
-          {loading && !errorMessage ? (
-            <span>loading...</span>) : errorMessage ? (
-              <div className="errorMessage">{errorMessage}</div>
-            ) : (
-              movies.map((movie, index) => (
-                <Card className={`${classes.card} ${classes.grid}`} key={`${index}-${movie.title}`} >
-                  <Movie movie={movie} />
-                </Card>
-              )
-              )
-            )
-          }
+          {getMovies}
         </div>
       </Container>
       <Footer />
